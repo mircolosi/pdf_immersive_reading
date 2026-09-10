@@ -1,0 +1,40 @@
+tts:
+  engine: edge-tts        # edge-tts | kokoro | xtts
+  edge_tts:
+    voice: en-US-AriaNeural
+    rate: "+0%"
+    pitch: "+0Hz"
+  kokoro:
+    voice: af_bella
+    device: cpu            # cpu | cuda
+  xtts:
+    device: cpu            # cuda strongly recommended
+    speaker: default        # built-in default speaker, no cloning
+
+pdf:
+  render_dpi: 150
+  strip_repeated_headers_footers: true
+  # Starting choice for the PDF->markdown converter dropdown in the GUI —
+  # unlike the TTS engine, this one is swappable live, no restart needed.
+  # plain: raw text, no markdown, zero extra deps (always available).
+  # pymupdf4llm: heuristic markdown, no ML model, fast, CPU.
+  # markitdown: lightweight generalist converter, no per-page split.
+  # docling: small layout ML model, CPU, good tables/reading-order.
+  # marker: full layout+OCR+equation ML pipeline, most precise, heaviest/slowest.
+  converter: pymupdf4llm
+
+playback:
+  buffer_ahead: 2                          # sentences kept pre-synthesized
+  # Full sentences are synthesized as one clip by default (no sub-sentence
+  # chunking) — natural prosody over low first-audio latency. Lower this if
+  # a slow local engine (XTTS on CPU) makes long sentences pause noticeably
+  # before starting; see design doc §10.3.
+  split_long_sentences_over_chars: 100000
+
+cache:
+  dir: ./.cache
+  enabled: true
+
+server:
+  host: 127.0.0.1
+  port: 7860

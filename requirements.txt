@@ -1,0 +1,13 @@
+gradio>=4.44
+pymupdf>=1.24
+pysbd>=0.3.4
+edge-tts>=6.1
+soundfile>=0.12
+pydub>=0.25
+pyyaml>=6.0
+numpy>=1.26
+
+# Default working setup: "plain" and "pymupdf4llm" PDF converters, "edge-tts"
+# TTS engine. No ML models, no heavy downloads. Everything else (Kokoro,
+# XTTS, MarkItDown, Docling, marker) is optional — see requirements-optional.txt.
+pymupdf4llm>=0.0.17

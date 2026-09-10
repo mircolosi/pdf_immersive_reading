@@ -1,0 +1,40 @@
+/* Injected verbatim via gr.Blocks.launch(head=...) alongside highlight.js.
+   Kept in its own file rather than inside a Python f-string: every brace in
+   an f-string has to be doubled, which made this unreadable and unlintable. */
+
+.text-panel { font-size: 0.85rem; line-height: 1.7; white-space: pre-wrap; }
+.sentence { cursor: pointer; }
+.word { cursor: pointer; }
+
+/* Only the spoken word is highlighted. There was also a whole-sentence
+   highlight; it was applied once per sentence from a JS variable, so any panel
+   re-render silently dropped it mid-playback with nothing to restore it. Word
+   highlighting has no such state — it is re-derived from the DOM every frame. */
+.word.active-word { background: #ff9d3c; border-radius: 2px; }
+
+/* pulsing dot after a sentence still being synthesized */
+.sentence[data-pending="1"]::after {
+  content: " \25CF"; color: #999; animation: rd-pulse 1s infinite;
+}
+@keyframes rd-pulse { 50% { opacity: 0.2; } }
+
+/* a sentence whose synthesis failed — struck through, so it's obvious why
+   playback stopped there instead of the panel just sitting silent */
+.sentence[data-error="1"] { text-decoration: line-through wavy #e53e3e; }
+
+/* Gradio's visible=False unmounts the component entirely, which breaks the
+   JS -> Python bridge buttons; hide them with CSS so they stay in the DOM. */
+.rd-hidden { display: none !important; }
+
+.sentence.heading { margin: 0.6em 0 0.3em; }
+.sentence.list-item { display: block; margin-left: 1.2em; }
+.text-panel code { background: rgba(127,127,127,0.15); padding: 0 0.3em; border-radius: 3px; }
+.text-panel a { color: #3182ce; }
+
+#rd-page-image img { cursor: zoom-in; }
+#rd-zoom-lens {
+  position: fixed; width: 960px; height: 540px; border-radius: 8px;
+  border: 2px solid rgba(0,0,0,0.4); box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+  background-repeat: no-repeat; background-color: #fff;
+  pointer-events: none; z-index: 9999; display: none;
+}

@@ -1,0 +1,12 @@
+# Optional extras — install only what you plan to select in config.yaml
+# (TTS engine) or the GUI dropdown (PDF converter). Install individually
+# (pip install kokoro) or all at once (pip install -r requirements-optional.txt).
+
+# Local TTS engines
+kokoro>=0.7.0          # tts.engine: kokoro
+coqui-tts>=0.24        # tts.engine: xtts
+
+# PDF->markdown converters
+markitdown[pdf]>=0.0.1a3   # converter: markitdown
+docling>=2.0               # converter: docling
+marker-pdf>=1.0            # converter: marker
