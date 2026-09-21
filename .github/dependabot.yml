@@ -1,0 +1,28 @@
+version: 2
+updates:
+  # Python dependencies (requirements.txt, requirements-optional.txt)
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+
+  # Keep the GitHub Actions workflow itself up to date
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "ci"
+
+  # Base image and layers in the Dockerfile
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "docker"

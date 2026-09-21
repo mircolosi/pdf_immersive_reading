@@ -1,0 +1,87 @@
+name: Bug report
+description: Something isn't working as expected
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill in as much of this as you can.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug. What did you expect instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Include the PDF if possible (or a description of it — number of columns, scanned vs. native text, etc.)
+      placeholder: |
+        1. Open '...'
+        2. Select engine '...' / converter '...'
+        3. Click play / seek to '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: dropdown
+    id: engine
+    attributes:
+      label: TTS engine
+      options:
+        - edge-tts (default)
+        - kokoro
+        - xtts
+        - not applicable
+    validations:
+      required: true
+
+  - type: dropdown
+    id: converter
+    attributes:
+      label: PDF converter
+      options:
+        - plain
+        - pymupdf4llm (default)
+        - markitdown
+        - docling
+        - marker
+        - not applicable
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      placeholder: e.g. macOS 15, Ubuntu 24.04, Windows 11
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python version
+      placeholder: e.g. 3.12.4
+    validations:
+      required: true
+
+  - type: dropdown
+    id: install-method
+    attributes:
+      label: How are you running it?
+      options:
+        - Local venv
+        - Docker
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs / traceback
+      render: shell
