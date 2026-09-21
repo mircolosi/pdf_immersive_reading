@@ -25,8 +25,6 @@ from text.markdown_inline import (
     wrap_words_in_html,
 )
 from text.segmenter import segment_page, split_for_synthesis
-from utils.config import load_config
-
 
 # distinctive word from controller._CALIBRATION_TEXT, so a deliberately broken
 # engine can still answer the constructor's calibration call

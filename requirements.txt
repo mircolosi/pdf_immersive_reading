@@ -6,6 +6,7 @@ soundfile>=0.12
 pydub>=0.25
 pyyaml>=6.0
 numpy>=1.26
+ruff>=0.16.8
 
 # Default working setup: "plain" and "pymupdf4llm" PDF converters, "edge-tts"
 # TTS engine. No ML models, no heavy downloads. Everything else (Kokoro,

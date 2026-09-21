@@ -13,7 +13,8 @@ import shutil
 import tempfile
 import threading
 import time
-from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
+from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import TimeoutError as FutureTimeoutError
 from html import escape
 
 from engines.base import TTSEngine
@@ -329,8 +330,8 @@ class PlaybackController:
     def _synthesize_chunked(self, chunks: list[str]) -> AudioResult:
         """§10.3: sub-sentence chunking for synthesis granularity only — the
         chunks are concatenated back into one audio clip for playback."""
-        import soundfile as sf
         import numpy as np
+        import soundfile as sf
 
         pieces = []
         sample_rate = None

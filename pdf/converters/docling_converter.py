@@ -6,7 +6,9 @@ from pdf.converters.base import PDFConverter
 
 class DoclingConverter(PDFConverter):
     def extract_markdown_pages(self, pdf_path: str) -> list[str]:
-        from docling.document_converter import DocumentConverter  # deferred import, optional dependency
+        from docling.document_converter import (
+            DocumentConverter,  # deferred import, optional dependency
+        )
 
         doc = DocumentConverter().convert(pdf_path).document
         page_count = len(doc.pages) if getattr(doc, "pages", None) else 1

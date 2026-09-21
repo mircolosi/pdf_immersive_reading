@@ -70,8 +70,7 @@ _HTML_TAG = re.compile(
 # level and leaves one space behind, so dropping a "</td><td>" or a "<br>"
 # can't fuse the words on either side of it into one.
 _INLINE_TAGS = frozenset(
-    "a abbr b big cite code del em font i ins kbd mark q s samp small span "
-    "strong sub sup tt u var wbr".split()
+    ["a", "abbr", "b", "big", "cite", "code", "del", "em", "font", "i", "ins", "kbd", "mark", "q", "s", "samp", "small", "span", "strong", "sub", "sup", "tt", "u", "var", "wbr"]
 )
 
 

@@ -10,7 +10,9 @@ class MarkerConverter(PDFConverter):
     supports_pages = False
 
     def extract_markdown_pages(self, pdf_path: str) -> list[str]:
-        from marker.converters.pdf import PdfConverter  # deferred import, optional dependency
+        from marker.converters.pdf import (
+            PdfConverter,  # deferred import, optional dependency
+        )
         from marker.models import create_model_dict
         from marker.output import text_from_rendered
 

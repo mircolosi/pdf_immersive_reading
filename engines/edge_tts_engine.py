@@ -2,6 +2,7 @@
 timestamps. Not offline despite running via a local library — see README."""
 import asyncio
 
+import anyio
 import edge_tts
 import soundfile as sf
 
@@ -33,10 +34,10 @@ class EdgeTTSEngine(TTSEngine):
             receive_timeout=15,
         )
         word_timings: list[WordTiming] = []
-        with open(out_path, "wb") as f:
+        async with await anyio.open_file(out_path, "wb") as f:
             async for chunk in communicate.stream():
                 if chunk["type"] == "audio":
-                    f.write(chunk["data"])
+                    await f.write(chunk["data"])
                 elif chunk["type"] == "WordBoundary":
                     start_ms = chunk["offset"] // _TICKS_PER_MS
                     dur_ms = chunk["duration"] // _TICKS_PER_MS
