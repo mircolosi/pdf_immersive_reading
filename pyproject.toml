@@ -1,0 +1,68 @@
+[project]
+name = "pdf-immersive-reading"
+version = "0.2.0"
+description = "Turn text and PDFs into audiobooks with word-by-word highlighting — runs locally, pluggable TTS engines and PDF converters"
+readme = "README.md"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+requires-python = ">=3.12"
+authors = [{ name = "mircolosi" }]
+
+# Default install: edge-tts engine + plain/pymupdf4llm converters only.
+# No ML models, no heavy downloads. Matches the current requirements.txt.
+dependencies = [
+    "gradio>=4.44",
+    "pymupdf>=1.24",
+    "pysbd>=0.3.4",
+    "edge-tts>=6.1",
+    "soundfile>=0.12",
+    "pydub>=0.25",
+    "pyyaml>=6.0",
+    "numpy>=1.26",
+    "pymupdf4llm>=0.0.17",
+]
+
+[project.urls]
+Repository = "https://github.com/mircolosi/pdf_immersive_reading"
+
+# Optional, heavier backends — install with `pip install -e ".[kokoro]"`,
+# or `pip install -e ".[all]"` for everything (equivalent to the old
+# requirements-optional.txt).
+[project.optional-dependencies]
+kokoro = ["kokoro>=0.7.0"]                # tts.engine: kokoro
+xtts = ["coqui-tts>=0.24"]                # tts.engine: xtts
+markitdown = ["markitdown[pdf]>=0.0.1a3"] # converter: markitdown
+docling = ["docling>=2.0"]                # converter: docling
+marker = ["marker-pdf>=1.0"]              # converter: marker
+all = [
+    "pdf-immersive-reading[kokoro,xtts,markitdown,docling,marker]",
+]
+# `pip install -e ".[dev]"` — lint/format tools, not needed to run the app.
+dev = [
+    "ruff>=0.6",
+]
+
+# This app is run with `python app.py`, not imported as a library, so there's
+# nothing to package — setuptools just needs *a* backend to satisfy pip's
+# `pip install -e .`, it isn't building anything from these directories.
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = []
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.ruff.format]
+# Ruff's formatter defaults are Black-compatible; listed explicitly here so
+# they're visible and easy to tweak rather than left implicit.
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

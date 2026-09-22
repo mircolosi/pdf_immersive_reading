@@ -7,8 +7,8 @@ process is intentionally lightweight.
 
 ```
 python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
-.venv/bin/pip install -r requirements-optional.txt   # only if you're touching an optional backend
+.venv/bin/pip install -e .
+.venv/bin/pip install -e ".[all]"   # only if you're touching an optional backend
 ```
 
 Run the app locally with `.venv/bin/python app.py`.
@@ -31,7 +31,7 @@ interface in `engines/`, PDF backends behind `PDFConverter` in `pdf/converters/`
 New backends should implement the existing interface rather than special-casing
 logic elsewhere in the app.
 - Keep the default install light. If your change needs a new dependency, put it
-in `requirements-optional.txt` and import it lazily (only when that
+in `pyproject.toml` under `[project.optional-dependencies]` and import it lazily (only when that
 engine/converter is actually selected), matching the pattern used by Kokoro,
 XTTS, Docling, marker, and MarkItDown.
 - Prefer clear, small functions over cleverness — this is a single-maintainer

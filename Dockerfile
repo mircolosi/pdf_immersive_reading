@@ -4,8 +4,8 @@ WORKDIR /app
 
 # Layer-cache dependencies separately from source so code edits don't
 # invalidate the (slow) pip install layer.
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY pyproject.toml .
+RUN pip install -e .
 
 COPY . .
 
