@@ -57,8 +57,9 @@ in sync so you never lose your place.
 
 ```bash
 python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
-.venv/bin/python app.py
+.venv/bin/activate # or .venv\Scripts\activate if on Windows
+pip install -e ".[dev]"
+python app.py
 ```
 
 Open <http://127.0.0.1:7860>, click **Open PDF**, and press play.
@@ -66,7 +67,7 @@ Open <http://127.0.0.1:7860>, click **Open PDF**, and press play.
 Or pass the document on the command line to skip the file picker:
 
 ```bash
-.venv/bin/python app.py paper.pdf
+python app.py paper.pdf
 ```
 
 The default install gives you the `edge-tts` engine plus the `plain` and
@@ -74,13 +75,13 @@ The default install gives you the `edge-tts` engine plus the `plain` and
 opt-in:
 
 ```bash
-.venv/bin/pip install -r requirements-optional.txt   # all extras at once
+pip install -r requirements-optional.txt   # all extras at once
 # or just what you need:
-.venv/bin/pip install kokoro                # tts.engine: kokoro
-.venv/bin/pip install coqui-tts             # tts.engine: xtts
-.venv/bin/pip install docling               # converter: docling
-.venv/bin/pip install marker-pdf            # converter: marker
-.venv/bin/pip install "markitdown[pdf]"     # converter: markitdown
+pip install -e ".[kokoro]"         # tts.engine: kokoro
+pip install -e ".[xtts]"           # tts.engine: xtts
+pip install -e ".[docling]"        # converter: docling
+pip install -e ".[marker]"         # converter: marker
+pip install -e ".[markitdown]"     # converter: markitdown
 ```
 
 Each optional backend imports its dependency only when you actually select it, so

@@ -1,4 +1,4 @@
-.PHONY: docker lint format check test
+.PHONY: docker lint format check test install install-dev
 
 PORT ?= 7860
 DOCS ?= $(CURDIR)
@@ -20,3 +20,12 @@ check: lint format test
 
 test:
 	python tests/test_pipeline.py
+
+install:
+	pip install -e .
+ 
+install-dev:
+	pip install -e ".[dev]"
+
+install-full:
+    pip install -e ".[all]"
