@@ -5,6 +5,7 @@ singleton in app.py rather than per-session gr.State — background threads and
 a synthesis queue don't serialize across Gradio sessions anyway, and the app
 is local-only / single-user by requirement.
 """
+import hashlib
 import json
 import logging
 import os
@@ -62,6 +63,9 @@ class PlaybackController:
 
         self.pdf_path: str | None = None
         self.pdf_hash: str | None = None
+        # pasted text instead of a PDF: no page image, no converter, and the
+        # text is not markdown, so inline markup must stay literal.
+        self.text_mode = False
         self.cache: AudioCache | None = None
         self.pages_text: list[str] = []
         self.sentences_by_page: dict[int, list[Sentence]] = {}
@@ -127,6 +131,7 @@ class PlaybackController:
 
     def load_pdf(self, pdf_path: str, converter_name: str | None = None):
         self.state = "LOADING"
+        self.text_mode = False
         self.pdf_path = pdf_path
         self.pdf_hash = sha256_file(pdf_path)
 
@@ -157,6 +162,28 @@ class PlaybackController:
         self.sentences_by_page = {}
         for i, text in enumerate(self.pages_text, start=1):
             self.sentences_by_page[i] = segment_page(text, i, self.converter.produces_inline_markdown)
+
+        self.current_page = 1
+        self.current_index = 0
+        self._reset_queue()
+        self._seed_queue()
+        self.state = "PAUSED"
+
+    def load_text(self, text: str):
+        """Same pipeline as load_pdf, minus the PDF: pasted text is one page,
+        has no page image and no converter. Cache is keyed by the text's own
+        hash under a "text" pseudo-converter, so it never collides with a
+        PDF's audio and re-pasting the same text is an instant cache hit."""
+        self.state = "LOADING"
+        self.text_mode = True
+        self.pdf_path = None
+        self.pdf_hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
+        self.cache = AudioCache(self.cache_root, self.pdf_hash, f"{self.engine_name}__text", self.voice)
+
+        self.pages_text = [text]
+        self.page_count = 1
+        self.converter_warning = None
+        self.sentences_by_page = {1: segment_page(text, 1, False)}
 
         self.current_page = 1
         self.current_index = 0
@@ -449,7 +476,7 @@ class PlaybackController:
 
     @property
     def render_markdown(self) -> bool:
-        return self.converter.produces_inline_markdown
+        return not self.text_mode and self.converter.produces_inline_markdown
 
     # ---- rendering -------------------------------------------------
 

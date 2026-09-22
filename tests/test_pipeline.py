@@ -397,6 +397,28 @@ def test_controller_cache_hit_is_fast(tmp_dir, pdf_path):
     assert elapsed < 0.2, f"cache-hit replay should be near-instant, took {elapsed}s"
 
 
+def test_controller_load_text(tmp_dir, pdf_path):
+    # pasted text reuses the whole pipeline, but has no PDF: one page, no page
+    # image, and its markup must stay literal (it was never markdown).
+    config = {
+        "cache": {"dir": tmp_dir, "enabled": True},
+        "pdf": {"render_dpi": 72, "strip_repeated_headers_footers": False, "converter": "pymupdf4llm"},
+        "playback": {"buffer_ahead": 1, "split_long_sentences_over_chars": 1000},
+    }
+    ctrl = PlaybackController(config, FakeEngine(), "fake", "v1", is_local_engine=True)
+    ctrl.load_text("Hello a_b_c world. Second one here.")
+
+    assert ctrl.pdf_path is None and ctrl.text_mode
+    assert ctrl.page_count == 1
+    assert len(ctrl.sentences_for(1)) == 2
+    assert ctrl.render_markdown is False
+    assert "a_b_c" in ctrl.render_text_panel_html()
+
+    # switching back to a PDF must leave no text-mode state behind
+    ctrl.load_pdf(pdf_path)
+    assert ctrl.text_mode is False and ctrl.pdf_path == pdf_path
+
+
 def test_controller_next_position_crosses_page_boundary(tmp_dir, pdf_path):
     # next_position() is what feeds the frontend's gapless handoff — if it
     # stalls at the last sentence of a page, playback goes silent on every
@@ -556,6 +578,8 @@ def run_all():
         print("ok: synthesis failure recorded and surfaced")
         test_controller_survives_dead_engine_at_startup(os.path.join(tmp_dir, "cache2d"))
         print("ok: dead engine at startup degrades to a warning")
+        test_controller_load_text(os.path.join(tmp_dir, "cache2f"), pdf_path)
+        print("ok: pasted text loads as a one-page document")
         test_controller_next_position_crosses_page_boundary(os.path.join(tmp_dir, "cache2b"), pdf_path)
         print("ok: next_position crosses page boundary, stops at document end")
         test_panel_html_is_independent_of_playback_state(os.path.join(tmp_dir, "cache2e"), pdf_path)

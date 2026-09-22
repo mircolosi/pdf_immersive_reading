@@ -174,6 +174,14 @@ def on_pdf_uploaded(file, converter_name):
     return _poll_with_image()
 
 
+def on_text_submit(text):
+    if not text or not text.strip():
+        return _poll_with_image()
+    controller.load_text(text)
+    _reset_panel_cache()
+    return _poll_with_image()
+
+
 def on_converter_change(converter_name):
     controller.reload_with_converter(converter_name)
     _reset_panel_cache()
@@ -242,10 +250,15 @@ with gr.Blocks(title="PDF Immersive Reading") as demo:
 
     with gr.Row():
         with gr.Column(scale=3):
-            upload_btn = gr.UploadButton("📄 Open PDF", file_types=[".pdf"])
-            page_image = gr.Image(
-                label="Page", interactive=False, show_label=False, buttons=[], elem_id="rd-page-image"
-            )
+            with gr.Tabs():
+                with gr.Tab("PDF"):
+                    upload_btn = gr.UploadButton("📄 Open PDF", file_types=[".pdf"])
+                    page_image = gr.Image(
+                        label="Page", interactive=False, show_label=False, buttons=[], elem_id="rd-page-image"
+                    )
+                with gr.Tab("Text"):
+                    text_input = gr.Textbox(label="Paste text", lines=18, show_label=False)
+                    read_text_btn = gr.Button("🔊 Read text")
             page_label = gr.Markdown("Page 0 / 0")
             with gr.Group():
                 with gr.Row():
@@ -285,6 +298,7 @@ with gr.Blocks(title="PDF Immersive Reading") as demo:
     upload_btn.upload(
         on_pdf_uploaded, inputs=[upload_btn, converter_dropdown], outputs=IMAGE_OUTPUTS
     )
+    read_text_btn.click(on_text_submit, inputs=[text_input], outputs=IMAGE_OUTPUTS)
     converter_dropdown.change(on_converter_change, inputs=[converter_dropdown], outputs=IMAGE_OUTPUTS)
     next_page_btn.click(on_next_page, outputs=IMAGE_OUTPUTS)
     prev_page_btn.click(on_prev_page, outputs=IMAGE_OUTPUTS)
