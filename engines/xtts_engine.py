@@ -1,5 +1,6 @@
 """Coqui XTTS-v2 local neural TTS. Default speaker only, no voice cloning.
 Model loaded once. No word timings -> sentence-level highlighting only."""
+
 from engines.base import TTSEngine
 from models import AudioResult
 
@@ -15,9 +16,7 @@ class XTTSEngine(TTSEngine):
         self.language = "en"
 
     def synthesize(self, text: str, out_path: str) -> AudioResult:
-        self.tts.tts_to_file(
-            text=text, speaker=self.speaker, language=self.language, file_path=out_path
-        )
+        self.tts.tts_to_file(text=text, speaker=self.speaker, language=self.language, file_path=out_path)
 
         import soundfile as sf
 

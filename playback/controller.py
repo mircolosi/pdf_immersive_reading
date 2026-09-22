@@ -5,6 +5,7 @@ singleton in app.py rather than per-session gr.State — background threads and
 a synthesis queue don't serialize across Gradio sessions anyway, and the app
 is local-only / single-user by requirement.
 """
+
 import hashlib
 import json
 import logging

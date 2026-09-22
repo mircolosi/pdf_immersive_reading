@@ -3,6 +3,7 @@
 precision of the bundled converters, also the heaviest/slowest. Produces one
 flat markdown document — no reliable per-page split across marker versions,
 so it comes back as a single page like MarkItDown."""
+
 from pdf.converters.base import PDFConverter
 
 

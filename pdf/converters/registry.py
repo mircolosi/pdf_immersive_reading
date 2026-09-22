@@ -1,6 +1,7 @@
 """Name -> converter class, for the GUI dropdown and config.yaml. All entries
 are listed regardless of whether their optional dependency is installed —
 picking an uninstalled one just surfaces a clear ImportError in the UI."""
+
 from pdf.converters.base import PDFConverter
 from pdf.converters.docling_converter import DoclingConverter
 from pdf.converters.marker_converter import MarkerConverter

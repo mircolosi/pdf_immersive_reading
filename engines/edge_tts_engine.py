@@ -1,5 +1,6 @@
 """edge-tts backend: cloud (Microsoft), async streaming, native word-boundary
 timestamps. Not offline despite running via a local library — see README."""
+
 import asyncio
 
 import anyio
@@ -41,9 +42,7 @@ class EdgeTTSEngine(TTSEngine):
                 elif chunk["type"] == "WordBoundary":
                     start_ms = chunk["offset"] // _TICKS_PER_MS
                     dur_ms = chunk["duration"] // _TICKS_PER_MS
-                    word_timings.append(
-                        WordTiming(word=chunk["text"], start_ms=start_ms, end_ms=start_ms + dur_ms)
-                    )
+                    word_timings.append(WordTiming(word=chunk["text"], start_ms=start_ms, end_ms=start_ms + dur_ms))
 
         duration_ms = _probe_duration_ms(out_path)
         return AudioResult(

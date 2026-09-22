@@ -2,6 +2,7 @@
 as HTML for display. Block-level markup (#, -, *) is handled separately in
 segmenter.py; this only deals with markers that can appear inside one line.
 """
+
 import re
 from html import escape, unescape
 
@@ -70,7 +71,33 @@ _HTML_TAG = re.compile(
 # level and leaves one space behind, so dropping a "</td><td>" or a "<br>"
 # can't fuse the words on either side of it into one.
 _INLINE_TAGS = frozenset(
-    ["a", "abbr", "b", "big", "cite", "code", "del", "em", "font", "i", "ins", "kbd", "mark", "q", "s", "samp", "small", "span", "strong", "sub", "sup", "tt", "u", "var", "wbr"]
+    [
+        "a",
+        "abbr",
+        "b",
+        "big",
+        "cite",
+        "code",
+        "del",
+        "em",
+        "font",
+        "i",
+        "ins",
+        "kbd",
+        "mark",
+        "q",
+        "s",
+        "samp",
+        "small",
+        "span",
+        "strong",
+        "sub",
+        "sup",
+        "tt",
+        "u",
+        "var",
+        "wbr",
+    ]
 )
 
 
@@ -159,9 +186,7 @@ def render_inline_html(text: str) -> str:
     # target and the caller-supplied href). The link *text* stays in play, so
     # emphasis inside it still renders and word-wrapping can reach it.
     html_text = _LINK.sub(
-        lambda m: stash.keep(f'<a href="{m.group(2)}" target="_blank" rel="noopener">')
-        + m.group(1)
-        + "</a>",
+        lambda m: stash.keep(f'<a href="{m.group(2)}" target="_blank" rel="noopener">') + m.group(1) + "</a>",
         html_text,
     )
     html_text = _BOLD.sub(lambda m: f"<strong>{m.group(1) or m.group(2)}</strong>", html_text)

@@ -1,5 +1,6 @@
 """Baseline converter: raw PyMuPDF text extraction, no markdown structure.
 Zero extra dependencies — always available, used as the safe default."""
+
 from pdf.converters.base import PDFConverter
 from pdf.extractor import extract_pages
 

@@ -2,6 +2,7 @@
 chunking, cache round-trip, and controller seek/generation invalidation.
 No TTS network calls — uses a fake in-process engine. Run: python tests/test_pipeline.py
 """
+
 import logging
 import os
 import re
@@ -212,9 +213,7 @@ def test_cache_miss_when_sentence_text_changed(tmp_dir):
     from models import Sentence, WordTiming
 
     cache = AudioCache(tmp_dir, "hash1", "fake", "v1")
-    stale = Sentence(
-        page_no=1, index_in_page=0, text="The result<sup>2</sup> was.", char_start=0, char_end=27
-    )
+    stale = Sentence(page_no=1, index_in_page=0, text="The result<sup>2</sup> was.", char_start=0, char_end=27)
     tmp_audio = tempfile.mktemp(suffix=".mp3")
     sf.write(tmp_audio, np.zeros(1600, dtype="float32"), 16000)
     cache.put(
@@ -255,8 +254,7 @@ def test_legacy_cache_entry_is_kept_when_its_word_timings_still_match(tmp_dir):
                     "sentence_key": "k1",
                     "duration_ms": 100,
                     "word_timings": [
-                        {"word": w, "start_ms": i * 10, "end_ms": i * 10 + 10}
-                        for i, w in enumerate(spoken_words)
+                        {"word": w, "start_ms": i * 10, "end_ms": i * 10 + 10} for i, w in enumerate(spoken_words)
                     ],
                 },
                 f,
@@ -476,8 +474,16 @@ def test_align_timings_to_words():
     words = text.split()  # He / said, / "it / works" / (mostly); / we / shipped / it.
     aligned = PlaybackController.align_timings_to_words(
         text,
-        timings(("He", 0), ("said", 100), ("it", 200), ("works", 300), ("mostly", 400),
-                ("we", 500), ("shipped", 600), ("it", 700)),
+        timings(
+            ("He", 0),
+            ("said", 100),
+            ("it", 200),
+            ("works", 300),
+            ("mostly", 400),
+            ("we", 500),
+            ("shipped", 600),
+            ("it", 700),
+        ),
     )
     assert len(aligned) == len(words)
     assert aligned[0] == [0, 90]  # punctuation rides along with its word
@@ -570,9 +576,7 @@ def run_all():
         print("ok: cache entry invalidated when sentence text changes")
         test_legacy_cache_entry_is_kept_when_its_word_timings_still_match(os.path.join(tmp_dir, "cache1c"))
         print("ok: legacy cache entry kept when word timings still match")
-        test_controller_seek_bumps_generation_but_keeps_ready_audio(
-            os.path.join(tmp_dir, "cache2"), pdf_path
-        )
+        test_controller_seek_bumps_generation_but_keeps_ready_audio(os.path.join(tmp_dir, "cache2"), pdf_path)
         print("ok: seek bumps generation but keeps ready audio")
         test_controller_records_synthesis_failure(os.path.join(tmp_dir, "cache2a"), pdf_path)
         print("ok: synthesis failure recorded and surfaced")

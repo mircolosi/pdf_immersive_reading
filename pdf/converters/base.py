@@ -1,5 +1,6 @@
 """PDFConverter ABC — pluggable PDF -> markdown backends, swappable live from
 the GUI dropdown (unlike the TTS engine, which is config-only)."""
+
 from abc import ABC, abstractmethod
 
 

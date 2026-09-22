@@ -4,6 +4,7 @@ Header/footer detection: collect the first and last non-empty line of every
 page; any line whose normalized (digits stripped) form repeats on more than
 half the pages is treated as running header/footer and dropped.
 """
+
 import re
 from collections import Counter
 

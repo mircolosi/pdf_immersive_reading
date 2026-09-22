@@ -8,6 +8,7 @@ directly on raw extracted text (one hard '\\n' per visual PDF line) makes it
 split on every line wrap instead of on punctuation; joining wrapped lines
 before segmenting is the actual fix for that.
 """
+
 import re
 
 import pysbd
@@ -81,9 +82,7 @@ def segment_page(page_text: str, page_no: int, produces_inline_markdown: bool = 
         if block_type in ("heading", "list_item"):
             pieces = [block_text]
         else:
-            pieces = [
-                _restore_et_al(s.strip()) for s in _seg.segment(_protect_et_al(block_text)) if s.strip()
-            ]
+            pieces = [_restore_et_al(s.strip()) for s in _seg.segment(_protect_et_al(block_text)) if s.strip()]
 
         for piece in pieces:
             start = page_text.find(piece, cursor)

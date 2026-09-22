@@ -1,3 +1,5 @@
+.PHONY: docker lint format check test
+
 PORT ?= 7860
 DOCS ?= $(CURDIR)
 PDF  ?=
@@ -8,4 +10,13 @@ docker:
 	docker build -t pdf-active-reader .
 	docker run --rm -t -p $(PORT):$(PORT) -e PORT=$(PORT) -v "$(DOCS)":/docs:ro pdf-active-reader $(PDF:%=/docs/%)
 
-.PHONY: docker
+lint:
+	ruff check . --fix
+
+format:
+	ruff format .
+
+check: lint format test
+
+test:
+	python tests/test_pipeline.py

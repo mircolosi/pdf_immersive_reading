@@ -1,6 +1,7 @@
 """Docling (IBM): small layout-analysis ML model, downloaded once then fully
 local CPU inference. Good precision on tables/reading-order, lighter and
 faster than marker."""
+
 from pdf.converters.base import PDFConverter
 
 

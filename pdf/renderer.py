@@ -1,4 +1,5 @@
 """Render PDF pages to PNG for the visual-fidelity panel."""
+
 import os
 
 import pymupdf as fitz  # PyMuPDF (new import name, avoids deprecation warning)

@@ -1,4 +1,5 @@
 """Gradio entrypoint — wires PDF/text/TTS/playback modules together. §3, §11."""
+
 import argparse
 import json
 import logging
@@ -51,6 +52,7 @@ controller = PlaybackController(config, engine, engine_name, voice, is_local)
 
 cache_dir_abs = os.path.abspath(config["cache"]["dir"])
 os.makedirs(cache_dir_abs, exist_ok=True)
+
 
 def _read_frontend(filename: str) -> str:
     with open(os.path.join(_HERE, "frontend", filename), "r", encoding="utf-8") as f:
@@ -295,9 +297,7 @@ with gr.Blocks(title="PDF Immersive Reading") as demo:
     PANEL_OUTPUTS = [text_panel, control_html, page_label, warning_md]
     IMAGE_OUTPUTS = [page_image, *PANEL_OUTPUTS]
 
-    upload_btn.upload(
-        on_pdf_uploaded, inputs=[upload_btn, converter_dropdown], outputs=IMAGE_OUTPUTS
-    )
+    upload_btn.upload(on_pdf_uploaded, inputs=[upload_btn, converter_dropdown], outputs=IMAGE_OUTPUTS)
     read_text_btn.click(on_text_submit, inputs=[text_input], outputs=IMAGE_OUTPUTS)
     converter_dropdown.change(on_converter_change, inputs=[converter_dropdown], outputs=IMAGE_OUTPUTS)
     next_page_btn.click(on_next_page, outputs=IMAGE_OUTPUTS)

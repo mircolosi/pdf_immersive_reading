@@ -1,4 +1,5 @@
 """Load config.yaml (single dict, no schema class — spec has no need for one)."""
+
 import yaml
 
 # No default path: it used to be the relative "config.yaml", which silently

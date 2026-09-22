@@ -1,4 +1,5 @@
 """Shared data model, per design doc §6."""
+
 from dataclasses import dataclass
 
 

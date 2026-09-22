@@ -1,4 +1,5 @@
 """On-disk audio+timing cache, per (pdf, engine, voice, sentence). §12."""
+
 import json
 import os
 import re
@@ -77,9 +78,7 @@ class AudioCache:
             "sentence_key": result.sentence_key,
             "text": sentence.text,
             "duration_ms": result.duration_ms,
-            "word_timings": (
-                [w.__dict__ for w in result.word_timings] if result.word_timings is not None else None
-            ),
+            "word_timings": ([w.__dict__ for w in result.word_timings] if result.word_timings is not None else None),
         }
         # write-then-rename: the audio file already exists at this point, so a
         # crash midway through a plain write would leave a half-written sidecar

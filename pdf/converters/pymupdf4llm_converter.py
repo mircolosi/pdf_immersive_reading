@@ -1,6 +1,7 @@
 """pymupdf4llm: heuristic markdown extraction on top of PyMuPDF. No ML model,
 pure CPU, fast. Good precision on digital-native PDFs; weak on scanned/complex
 layouts."""
+
 from pdf.converters.base import PDFConverter
 
 

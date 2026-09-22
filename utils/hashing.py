@@ -1,4 +1,5 @@
 """Content hashing for cache keys."""
+
 import hashlib
 
 

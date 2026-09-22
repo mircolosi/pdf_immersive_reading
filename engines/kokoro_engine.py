@@ -1,6 +1,7 @@
 """Kokoro local neural TTS. Model loaded once at construction (module-level
 singleton usage happens in app.py, not here). No word timings -> sentence-
 level highlighting only."""
+
 import numpy as np
 import soundfile as sf
 
