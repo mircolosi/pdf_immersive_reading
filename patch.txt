@@ -1,0 +1,82 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 9993e5b..7eb2ba5 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -45,7 +45,7 @@ jobs:
+           python-version: "3.12"
+ 
+       - name: Install ruff
+-        run: pip install ruff
++        run: pip install -e ".[dev]"
+ 
+       - name: Run ruff
+         run: ruff check .
+diff --git a/Dockerfile b/Dockerfile
+index 6b640e0..5dd108d 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -5,7 +5,7 @@ WORKDIR /app
+ # Layer-cache dependencies separately from source so code edits don't
+ # invalidate the (slow) pip install layer.
+ COPY pyproject.toml .
+-RUN RUN pip install -e .
++RUN pip install -e .
+ 
+ COPY . .
+ 
+diff --git a/Makefile b/Makefile
+index be76705..33bfc5c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -28,4 +28,4 @@ install-dev:
+ 	pip install -e ".[dev]"
+ 
+ install-full:
+-    pip install -e ".[all]"
+\ No newline at end of file
++	pip install -e ".[all]"
+\ No newline at end of file
+diff --git a/README.md b/README.md
+index bb75663..260d442 100644
+--- a/README.md
++++ b/README.md
+@@ -57,8 +57,8 @@ in sync so you never lose your place.
+ 
+ ```bash
+ python3 -m venv .venv
+-.venv/bin/activate # or .venv\Scripts\activate if on Windows
+-pip install -e ".[dev]"
++source .venv/bin/activate # or .venv\Scripts\activate if on Windows
++pip install -e .
+ python app.py
+ ```
+ 
+@@ -75,7 +75,7 @@ The default install gives you the `edge-tts` engine plus the `plain` and
+ opt-in:
+ 
+ ```bash
+-pip install -r requirements-optional.txt   # all extras at once
++pip install -e ".[all]"   # all extras at once
+ # or just what you need:
+ pip install -e ".[kokoro]"         # tts.engine: kokoro
+ pip install -e ".[xtts]"           # tts.engine: xtts
+@@ -149,8 +149,8 @@ make docker PDF=paper.pdf      # mounts the file's directory and opens it
+ ```
+ 
+ Pick a different port with `-e PORT=9999 -p 9999:9999`. The image installs
+-`requirements.txt` only; for Kokoro, XTTS, Docling, marker, or MarkItDown you'll
+-want a derived image that also installs `requirements-optional.txt`. The cache is
++the default dependencies only; for Kokoro, XTTS, Docling, marker, or MarkItDown you'll
++want a derived image that also installs the optionals as well. The cache is
+ not persisted across container restarts unless you mount a volume at `/app/.cache`.
+ 
+ ## How it works
+@@ -194,7 +194,7 @@ panel can re-render as often as it likes without ever restarting playback.
+ ## Tests
+ 
+ ```bash
+-.venv/bin/python tests/test_pipeline.py
++python tests/test_pipeline.py
+ ```
+ 
+ A single runnable script using plain asserts, not pytest. It substitutes a fake

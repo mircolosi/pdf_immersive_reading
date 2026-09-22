@@ -28,4 +28,4 @@ install-dev:
 	pip install -e ".[dev]"
 
 install-full:
-    pip install -e ".[all]"
+	pip install -e ".[all]"

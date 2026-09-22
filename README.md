@@ -57,8 +57,8 @@ in sync so you never lose your place.
 
 ```bash
 python3 -m venv .venv
-.venv/bin/activate # or .venv\Scripts\activate if on Windows
-pip install -e ".[dev]"
+source .venv/bin/activate # or .venv\Scripts\activate if on Windows
+pip install -e .
 python app.py
 ```
 
@@ -75,7 +75,7 @@ The default install gives you the `edge-tts` engine plus the `plain` and
 opt-in:
 
 ```bash
-pip install -r requirements-optional.txt   # all extras at once
+pip install -e ".[all]"   # all extras at once
 # or just what you need:
 pip install -e ".[kokoro]"         # tts.engine: kokoro
 pip install -e ".[xtts]"           # tts.engine: xtts
@@ -149,8 +149,8 @@ make docker PDF=paper.pdf      # mounts the file's directory and opens it
 ```
 
 Pick a different port with `-e PORT=9999 -p 9999:9999`. The image installs
-`requirements.txt` only; for Kokoro, XTTS, Docling, marker, or MarkItDown you'll
-want a derived image that also installs `requirements-optional.txt`. The cache is
+the default dependencies only; for Kokoro, XTTS, Docling, marker, or MarkItDown you'll
+want a derived image that also installs the optionals as well. The cache is
 not persisted across container restarts unless you mount a volume at `/app/.cache`.
 
 ## How it works
@@ -194,7 +194,7 @@ panel can re-render as often as it likes without ever restarting playback.
 ## Tests
 
 ```bash
-.venv/bin/python tests/test_pipeline.py
+python tests/test_pipeline.py
 ```
 
 A single runnable script using plain asserts, not pytest. It substitutes a fake
