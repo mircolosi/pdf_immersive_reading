@@ -30,7 +30,7 @@ def build_engine(config: dict):
     switching (requirement #6). Local engines load their model once here."""
     name = config["tts"]["engine"]
     if name == "edge-tts":
-        cfg = config["tts"]["edge_tts"]
+        cfg = config["tts"]["edge-tts"]
         return EdgeTTSEngine(voice=cfg["voice"], rate=cfg["rate"], pitch=cfg["pitch"]), cfg["voice"], False
     if name == "kokoro":
         from engines.kokoro_engine import KokoroEngine

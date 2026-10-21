@@ -1,4 +1,4 @@
-.PHONY: docker lint format check test install install-dev
+.PHONY: docker lint format check test install install-dev run env
 
 PORT ?= 7860
 DOCS ?= $(CURDIR)
@@ -29,3 +29,9 @@ install-dev:
 
 install-full:
 	pip install -e ".[all]"
+
+run:
+	python app.py
+
+env:
+	python -m venv .venv

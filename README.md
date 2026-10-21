@@ -2,13 +2,13 @@
 
 <img src="docs/header.svg" alt="PDF Immersive Reading" width="100%">
 
-# PDF Immersive Reading
+# PDF Immersive Reading ![Static Badge](https://img.shields.io/badge/version-0.2.0-blue)
 
 **Read PDFs aloud, sentence by sentence, with the spoken text highlighted as you listen.**
 
-[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg?logo=python)](https://www.python.org/downloads/)
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-green.svg)](LICENSE)
-[![UI: Gradio](https://img.shields.io/badge/UI-Gradio-orange.svg)](https://gradio.app)
+[![UI: Gradio](https://img.shields.io/badge/UI-Gradio-orange.svg?logo=gradio)](https://gradio.app)
 [![Runs locally](https://img.shields.io/badge/runs-locally-lightgrey.svg)](#privacy-and-network-use)
 
 </div>
